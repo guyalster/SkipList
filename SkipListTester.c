@@ -4,25 +4,25 @@
 
 typedef struct _TestStruct
 {
-	int K;
-	int V;
+    int K;
+    int V;
     SkipNode Node;
     
 } TestStruct;
 
 static int NodeCompare(SkipNode *N1, SkipNode *N2)
 {
-	TestStruct *M1 = NULL, *M2 = NULL;
-	GET_SKIP_CONTAINER(TestStruct, M1, N1, Node);
-	GET_SKIP_CONTAINER(TestStruct, M2, N2, Node);
+    TestStruct *M1 = NULL, *M2 = NULL;
+    GET_SKIP_CONTAINER(TestStruct, M1, N1, Node);
+    GET_SKIP_CONTAINER(TestStruct, M2, N2, Node);
     return (M1->K - M2->K);
 }
 
 static int ValueCompare(void *V, SkipNode *N1)
 {
-	TestStruct *M1;
+    TestStruct *M1;
     int *K = (int*)V;
-	GET_SKIP_CONTAINER(TestStruct, M1, N1, Node);
+    GET_SKIP_CONTAINER(TestStruct, M1, N1, Node);
 
     return (*K - M1->K);
 }
@@ -45,14 +45,14 @@ int main()
         SL->InsertNewNode(SL,&(Arr[i].Node));
     }
 
-	int Key = 593023;
-	Res1 = SL->GetSkipNode(SL, &Key, &N);
+    int Key = 593023;
+    Res1 = SL->GetSkipNode(SL, &Key, &N);
 
     if (Res1== enOk)
     {
         printf("Received OK\n");
-		TestStruct *M1;
-		GET_SKIP_CONTAINER(TestStruct, M1, N, Node);
+        TestStruct *M1;
+        GET_SKIP_CONTAINER(TestStruct, M1, N, Node);
 
         printf("%d %d\n", M1->K, M1->V);
     }
@@ -69,8 +69,8 @@ int main()
 
         if (Res1 == enOk)
         {
-			TestStruct *M1;
-			GET_SKIP_CONTAINER(TestStruct, M1, N, Node);
+            TestStruct *M1;
+            GET_SKIP_CONTAINER(TestStruct, M1, N, Node);
 
             printf("%d %d\n", M1->K, M1->V);
         }

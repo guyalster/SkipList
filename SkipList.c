@@ -80,27 +80,27 @@ InsertNewNode(
         return enUnititializedLib;
     }
 
-	//
-	// The compFunc will be used to compare two skipnodes
-	//
+    //
+    // The compFunc will be used to compare two skipnodes
+    //
 
     CompFunc = Head->SkipCompFunc;
 
-	//
-	// Generate a level for this new node such that:
-	// 0 <= Level < MaxSkipLevels
-	// If the new Level is > than Head->CurrLevels,
-	// we need to update Head->CurrLevels.
-	//
+    //
+    // Generate a level for this new node such that:
+    // 0 <= Level < MaxSkipLevels
+    // If the new Level is > than Head->CurrLevels,
+    // we need to update Head->CurrLevels.
+    //
 
     Level = pNode->Level =
         GetMaxLevel(
         Head->MaxSkipLevels,
         &(Head->CurrLevels));
 
-	//
-	// Allocate the memory for the new node's tower
-	//
+    //
+    // Allocate the memory for the new node's tower
+    //
     pNode->ppNext =
         SKIP_ALLOC(Level + 1, SkipNode*);
 
@@ -111,17 +111,17 @@ InsertNewNode(
     
     Curr = &(Head->MainNode);
 
-	for (
-		LevelToStart = Head->CurrLevels;
-		LevelToStart >= 0;
-		LevelToStart--)
+    for (
+        LevelToStart = Head->CurrLevels;
+        LevelToStart >= 0;
+        LevelToStart--)
     {
-		//
-		// For each level we first traverse all the way to the right
-		// using the next pointer. Until we either hit NULL or a Node
-		// that has a value greater than our Node.
-		// We use the CompFunc to determine this
-		// 
+        //
+        // For each level we first traverse all the way to the right
+        // using the next pointer. Until we either hit NULL or a Node
+        // that has a value greater than our Node.
+        // We use the CompFunc to determine this
+        // 
 
         while (Curr->ppNext[LevelToStart] != NULL)
         {
@@ -137,10 +137,10 @@ InsertNewNode(
             }
         }
 
-		//
-		// We add the new Node only if the Current Level we are at
-		// is less than or equal to the Top level of the new node
-		//
+        //
+        // We add the new Node only if the Current Level we are at
+        // is less than or equal to the Top level of the new node
+        //
 
         if (LevelToStart <= Level)
         {
@@ -189,11 +189,11 @@ GetSkipNode(
             Prev = Curr;
             Curr = Curr->ppNext[LevelToStart];
 
-			//
-			// We use the ValCompFunc to determine
-			// if the current Key is greater/less than or 
-			// equal to the current Node we are currently traversing
-			//
+            //
+            // We use the ValCompFunc to determine
+            // if the current Key is greater/less than or 
+            // equal to the current Node we are currently traversing
+            //
 
             Result = ValCompFunc(Key, Curr);
 
@@ -205,9 +205,9 @@ GetSkipNode(
 
             if (Result == 0)
             {
-				//
-				// We found our Node
-				//
+                //
+                // We found our Node
+                //
 
                 *ppOutNode = Curr;
                 return (enOk);
@@ -242,11 +242,11 @@ DeleteSkipNode(
     bool HasMoreToRemove = false;
     bool Removed = false;
 
-	//
-	// The do While clause is intended
-	// for the case in which RemoveAll
-	// is set to true. 
-	//
+    //
+    // The do While clause is intended
+    // for the case in which RemoveAll
+    // is set to true. 
+    //
 
     do
     {
@@ -294,10 +294,10 @@ DeleteSkipNode(
 
     if (Removed)
     {
-		//
-		// We were able to locate the node/nodes and remove
-		// at least one.
-		//
+        //
+        // We were able to locate the node/nodes and remove
+        // at least one.
+        //
 
         return (enOk);
     }
@@ -317,12 +317,12 @@ DestroySkipList(
         return;
     }
 
-	//
-	// Notice that we don't deallocate the Node's themselves
-	// other than the Sentinal. We only deallocate their corresponding 
-	// Towers. The deallocation of the nodes is the responsibility 
-	// of the user.
-	//
+    //
+    // Notice that we don't deallocate the Node's themselves
+    // other than the Sentinal. We only deallocate their corresponding 
+    // Towers. The deallocation of the nodes is the responsibility 
+    // of the user.
+    //
 
     for (Curr = Head->MainNode.ppNext[0]; Curr != NULL;)
     {
@@ -332,9 +332,9 @@ DestroySkipList(
         Curr = Next;
     }
 
-	//
-	// Deallocate the Sentinal node and its Tower
-	//
+    //
+    // Deallocate the Sentinal node and its Tower
+    //
 
     SKIP_FREE(Head->MainNode.ppNext);
     SKIP_FREE(Head);
@@ -346,19 +346,19 @@ InitializeSkipList(
     SkipCompare SkipComp,
     ValCompare ValComp)
 {
-	static bool SkipListLibInit = false;
+    static bool SkipListLibInit = false;
     SkipNodeSentinal *Sentinal = NULL;
     int LevelIdx = 0;
 
-	//
-	// This will only be called once
-	//
+    //
+    // This will only be called once
+    //
 
-	if (SkipListLibInit == false)
-	{
-		SkipListLibInit = true;
-		srand(((unsigned int)(time(NULL))));
-	}
+    if (SkipListLibInit == false)
+    {
+        SkipListLibInit = true;
+        srand(((unsigned int)(time(NULL))));
+    }
 
     Sentinal =
         SKIP_ALLOC(1, SkipNodeSentinal);
@@ -368,19 +368,19 @@ InitializeSkipList(
         return (NULL);
     }
 
-	//
-	// Make the sentinal point to the 
-	// skilist functions
-	//
+    //
+    // Make the sentinal point to the 
+    // skilist functions
+    //
 
     Sentinal->SkipCompFunc = SkipComp;
     Sentinal->ValCompFunc = ValComp;
     Sentinal->MaxSkipLevels = MaxSkipLevels;
     Sentinal->CurrLevels = 0;
 
-	//
-	// Allocate MaxSkipLevels for the sentinal's main node
-	//
+    //
+    // Allocate MaxSkipLevels for the sentinal's main node
+    //
 
     Sentinal->MainNode.ppNext =
         SKIP_ALLOC(MaxSkipLevels + 1, SkipNode*);
