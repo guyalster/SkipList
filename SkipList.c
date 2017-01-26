@@ -389,7 +389,7 @@ InitializeSkipList(
     {
         SKIP_FREE(Sentinal);
         Sentinal = NULL;
-		return NULL;
+        return NULL;
     }
 
     Sentinal->MainNode.Level = MaxSkipLevels;
